@@ -352,6 +352,7 @@ public class Book : MonoBehaviour {
 
         flip.EnableLayer();
         flip.DisableOriginalObj();
+        flip.EnablePiece();
     }
 
     public void OnMouseDragLeftPage()
@@ -455,6 +456,7 @@ public class Book : MonoBehaviour {
             flip.EnableOriginalObj();
             flip.DisableLayer();
             flip.ActivateAllPM();
+            flip.DisablePiece();
     }
     public IEnumerator TweenTo(Vector3 to, float duration, System.Action onFinish)
     {

@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using UnityEngine;
 using XDPaint;
-using XDPaint.Core;
 
 public class FlipEffectManager : MonoBehaviour
 {
@@ -11,6 +11,9 @@ public class FlipEffectManager : MonoBehaviour
     public GameObject controller;
 
     public FramesManager framesManager;
+    private CoverManager coverManager;
+
+    private List<PaintManager> deactivatedPM;
 
     private void Start()
     {
@@ -32,13 +35,20 @@ public class FlipEffectManager : MonoBehaviour
     // Activating n deactivating paintainingManager to avoid overpainting the object while peeling
     public void DeactivateAllPM()
     {
-        for(int i=0; i < framesManager.registeredPM.Count; i++)
+        deactivatedPM = new();
+
+        for (int i = 0; i < framesManager.registeredPM.Count; i++)
         {
             if (framesManager.registeredPM[i])
             {
                 var pm = framesManager.registeredPM[i];
-                pm.PaintObject.ProcessInput = false;
-                pm.PaintObject.FinishPainting();
+
+                if (pm.PaintObject.ProcessInput)
+                {
+                    pm.PaintObject.ProcessInput = false;
+                    pm.PaintObject.FinishPainting();
+                    deactivatedPM.Add(pm);
+                }
             }
             else
             {
@@ -48,16 +58,12 @@ public class FlipEffectManager : MonoBehaviour
     }
     public void ActivateAllPM()
     {
-        for (int i = 0; i < framesManager.registeredPM.Count; i++)
+        for (int i = 0; i < deactivatedPM.Count; i++)
         {
-            if (framesManager.registeredPM[i])
+            if (deactivatedPM[i])
             {
-                var pm = framesManager.registeredPM[i];
+                var pm = deactivatedPM[i];
                 pm.PaintObject.ProcessInput = true;
-            }
-            else
-            {
-                framesManager.registeredPM.RemoveAt(i);
             }
         }
     }
@@ -65,6 +71,35 @@ public class FlipEffectManager : MonoBehaviour
     void UpdateSprite(Sprite currentSprite)
     {
         pageManager.bookPages[2] = currentSprite;
+    }
+
+    public void EnablePiece()
+    {
+        if (!coverManager)
+        {
+            coverManager = transform.parent.GetComponent<CoverManager>();
+        }
+
+        if (coverManager.basePiece)
+        {
+            var pm = coverManager.basePiece.GetComponent<PaintManager>();
+            pm.PaintObject.ProcessInput = true;
+        }
+    }
+
+    public void DisablePiece()
+    {
+        if (!coverManager)
+        {
+            coverManager = GetComponent<CoverManager>();
+        }
+
+        if (coverManager.basePiece)
+        {
+            var pm = coverManager.basePiece.GetComponent<PaintManager>();
+            pm.PaintObject.ProcessInput = false;
+            pm.PaintObject.FinishPainting();
+        }
     }
 
     public void DisableOriginalObj()

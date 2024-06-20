@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Cover
+  - 0.6
+  - 4
   layers:
   - Default
   - TransparentFX

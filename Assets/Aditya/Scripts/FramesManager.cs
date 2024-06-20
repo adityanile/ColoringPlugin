@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using XDPaint;
 using XDPaint.Controllers;
 using XDPaint.Core;
@@ -24,7 +25,13 @@ public class FramesManager : MonoBehaviour
         StartCoroutine(Initailise());
     }
 
-
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
+        }
+    }
     IEnumerator Initailise()
     {
         foreach (var part in paintables)

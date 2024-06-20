@@ -38,6 +38,7 @@ public class MainManager : MonoBehaviour
             {
                 framesManager.CurrentBrushData.UsePattern = true;
                 framesManager.CurrentBrushData.PatternTexture = texture;
+                framesManager.CurrentBrushData.BrushColor = Color.white;
 
                 if(!tex.CompareTag("Untagged"))
                 float.TryParse(tex.tag, out patternScale);

@@ -12,7 +12,7 @@ public class MainManager : MonoBehaviour
     public Transform brushPane;
 
     public FramesManager framesManager;
-    public float patternScale = 3;
+    public float patternScale;
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +40,8 @@ public class MainManager : MonoBehaviour
                 framesManager.CurrentBrushData.PatternTexture = texture;
                 framesManager.CurrentBrushData.BrushColor = Color.white;
 
-                if(!tex.CompareTag("Untagged"))
-                float.TryParse(tex.tag, out patternScale);
+                if (!tex.CompareTag("Untagged"))
+                    float.TryParse(tex.tag, out patternScale);
 
                 framesManager.CurrentBrushData.PatternScale = new Vector2(patternScale, patternScale);
             });
